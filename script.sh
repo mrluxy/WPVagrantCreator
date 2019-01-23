@@ -1,19 +1,9 @@
-spinner() {
-    local i sp n
-    sp='◷◶◵◴'
-    n=${#sp}
-    printf ' '
-    while sleep 0.3; do
-        printf "%s\b" "${sp:i++%n:1}"
-    done
-}
 clear
 echo "========================"
 echo "WP_Creator"
 echo "========================"
 echo ""
-printf 'Installation de la VM, Merci de patienter...\n\n\n\n\n .. '
-spinner &
+printf 'Installation de la VM, Merci de patienter...'
 
 mkdir wpVagrant
 cd wpVagrant
@@ -25,10 +15,15 @@ end
 " > Vagrantfile
 mkdir data
 vagrant up > /dev/null
-kill "$!" > /dev/null # kill the spinner
-clear
 echo "
 clear
+echo '========================'
+echo 'WP_Creator'
+echo '========================'
+echo ''
+printf 'Installation du Wordpress, Merci de patienter...'
+
+# exec > /dev/null 2>&1
 
 cd /var/www/html
 
@@ -42,8 +37,27 @@ sudo debconf-set-selections <<< 'mysql-server-5.7 mysql-server/root_password_aga
  
 sudo apt-get install -y mysql-server 
 
-mysql -uroot -p0000 -e 'create database wordpress;' 
+mysql -u root -p0000 -e 'create database wordpress;' 
 
+sudo apt install wordpress -y
+
+curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+
+sudo chmod 777 wp-cli.phar
+sudo mv wp-cli.phar /usr/local/bin/wp
+
+wp core download
+
+wp config create --dbname=wordpress --dbuser=root --dbpass=0000
+
+wp core install --url=192.168.33.10 --title=Example --admin_user=root --admin_password=0000 --admin_email=info@example.com
+
+clear
+echo '========================'
+echo 'WP_Creator'
+echo '========================'
+echo ''
+printf 'Installation Terminée.\n\nPour utiliser Wordpress, merci de vous rendre sur cet URL :\nhttp://192.168.33.10/wp-admin/ \n\n\n'
 ">./data/sc2.sh 
 
 vagrant ssh -- -t 'bash /var/www/html/sc2.sh'
