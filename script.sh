@@ -23,7 +23,7 @@ echo '========================'
 echo ''
 printf 'Installation du Wordpress, Merci de patienter...'
 
-# exec > /dev/null 2>&1
+exec > /dev/null 2>&1
 
 cd /var/www/html
 
@@ -51,13 +51,12 @@ wp core download
 wp config create --dbname=wordpress --dbuser=root --dbpass=0000
 
 wp core install --url=192.168.33.10 --title=Example --admin_user=root --admin_password=0000 --admin_email=info@example.com
+">./data/sc2.sh 
 
+vagrant ssh -- -t 'bash /var/www/html/sc2.sh'
 clear
 echo '========================'
 echo 'WP_Creator'
 echo '========================'
 echo ''
-printf 'Installation Terminée.\n\nPour utiliser Wordpress, merci de vous rendre sur cet URL :\nhttp://192.168.33.10/wp-admin/ \n\n\n'
-">./data/sc2.sh 
-
-vagrant ssh -- -t 'bash /var/www/html/sc2.sh'
+printf 'Installation Terminée.\n\nPour utiliser Wordpress, merci de vous rendre sur cet URL :\n\nhttp://192.168.33.10/wp-admin/ \n\n\n'
